@@ -26,10 +26,12 @@ class Runtime
         $content = ob_get_clean();
         
         if(!empty($this->blockStack))
-            throw;
+            throw new \Exception();
+        
+        return 4;
     }
     
-    public function layout($name)
+    protected function layout($name)
     {
         $this->layout = $name;
     }
@@ -47,10 +49,6 @@ class Runtime
     
     public function endBlock()
     {
-        if(empty($this->blockStack)) {
-            throw;
-        }
-        
         $name = array_pop($this->blockStack);
         $this->blocks[$name] = ob_get_clean();
     }
