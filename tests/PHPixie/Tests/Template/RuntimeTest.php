@@ -66,17 +66,6 @@ class RuntimeTest extends \PHPixie\Test\Testcase
         );
         
         $this->runtimeTest(
-            '<?php echo $this->data()->get("name"); ?>',
-            array(
-                'content' => 'Trixie',
-            ),
-            array(),
-            array(
-                array('get', array('name'), 'Trixie')
-            )
-        );
-        
-        $this->runtimeTest(
             'Fairy
             <?php echo $this->childContent(); ?> 
             Trixie',
@@ -196,6 +185,15 @@ class RuntimeTest extends \PHPixie\Test\Testcase
         ');
     }
     
+    /**
+     * @covers ::data
+     * @covers ::<protected>
+     */
+    public function testData()
+    {
+        $this->assertSame($this->arrayData, $this->runtime()->data());
+    }
+        
     protected function exceptionCleanupTest($template)
     {
         ob_start();

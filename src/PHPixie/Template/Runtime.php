@@ -126,7 +126,7 @@ class Runtime
         $this->arrayData->remove($path);
     }
     
-    protected function data()
+    public function data()
     {
         return $this->arrayData;
     }
