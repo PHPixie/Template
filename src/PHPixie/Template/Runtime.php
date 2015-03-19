@@ -4,6 +4,7 @@ namespace PHPixie\Template;
 
 class Runtime
 {
+    protected $helpers;
     protected $file;
     protected $arrayData;
     protected $childContent;
@@ -12,8 +13,9 @@ class Runtime
     protected $layout;
     protected $blockStack = array();
     
-    public function __construct($file, $arrayData, $childContent = null, $blocks = array())
+    public function __construct($helpers, $file, $arrayData, $childContent = null, $blocks = array())
     {
+        $this->helpers      = $helpers;
         $this->file         = $file;
         $this->arrayData    = $arrayData;
         $this->childContent = $childContent;
@@ -22,6 +24,7 @@ class Runtime
     
     public function run()
     {
+        extract($this->helpers->aliases());
         extract($this->arrayData->get());
         ob_start();
         

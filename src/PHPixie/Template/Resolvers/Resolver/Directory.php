@@ -1,8 +1,8 @@
 <?php
 
-namespace PHPixie\Template\Resolver;
+namespace PHPixie\Template\Resolvers\Resolver;
 
-class Directory implements \PHPixie\Template\Resolver
+class Directory implements \PHPixie\Template\Resolvers\Resolver
 {
     
     protected $directory;
@@ -17,11 +17,10 @@ class Directory implements \PHPixie\Template\Resolver
     public function getTemplateFile($path)
     {
         $extension = pathinfo($path, PATHINFO_EXTENSION);
-        if($extension === '')
-        {
+        if($extension === '') {
             $path.='.'.$this->defaultExtension;
         }
         
-        return $path;
+        return $this->directory.'/'.$path;
     }
 }

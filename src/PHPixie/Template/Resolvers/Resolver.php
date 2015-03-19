@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPixie\Template;
+namespace PHPixie\Template\Resolvers;
 
 interface Resolver{
     public function getTemplateFile($name);

@@ -1,7 +1,8 @@
 <?php
-namespace \PHPixie\Templating\Formats;
+
+namespace PHPixie\Template\Formats;
 
 interface Format
 {
-    public function getCompiledFilePath($file);
+    public function compile($file);
 }
