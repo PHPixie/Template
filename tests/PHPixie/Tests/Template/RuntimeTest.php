@@ -7,13 +7,15 @@ namespace PHPixie\Tests\Template;
  */
 class RuntimeTest extends \PHPixie\Test\Testcase
 {
+    protected $extensions;
     protected $file;
     protected $arrayData;
     
     public function setUp()
     {
-        $this->file = tempnam(sys_get_temp_dir(), 'phpixie_template_test');
-        $this->arrayData = $this->quickMock('\PHPixie\Slice\Type\ArrayData');
+        $this->extensions = $this->quickMock('\PHPixie\Template\Extensions');
+        $this->file       = tempnam(sys_get_temp_dir(), 'phpixie_template_test');
+        $this->arrayData  = $this->quickMock('\PHPixie\Slice\Type\ArrayData');
     }
     
     /**
@@ -38,11 +40,10 @@ class RuntimeTest extends \PHPixie\Test\Testcase
             array(
                 'content' => 'Trixie',
             ),
-            array(),
-            array(),
-            null,
             array(
-                'name' => 'Trixie'
+                'data' => array(
+                    'name' => 'Trixie'
+                )
             )
         );
         
@@ -56,12 +57,13 @@ class RuntimeTest extends \PHPixie\Test\Testcase
                 'content' => 'Trixie 
                 6',
             ),
-            array(),
             array(
-                array('get', array('name'), 'Trixie'),
-                array('get', array('flowers', 5), 6),
-                array('set', array('magic', 'Rain')),
-                array('remove', array('magic'))
+                'arrayMethods' => array(
+                    array('get', array('name'), 'Trixie'),
+                    array('get', array('flowers', 5), 6),
+                    array('set', array('magic', 'Rain')),
+                    array('remove', array('magic'))
+                )
             )
         );
         
@@ -74,9 +76,9 @@ class RuntimeTest extends \PHPixie\Test\Testcase
                 Pixie 
                 Trixie'
             ),
-            array(),
-            array(),
-            'Pixie'
+            array(
+                'childContent' => 'Pixie'
+            )
         );
         
         $this->runtimeTest(
@@ -89,7 +91,9 @@ class RuntimeTest extends \PHPixie\Test\Testcase
                 )
             ),
             array(
-                'tree' => 'Pixie'
+                'blocks' => array(
+                    'tree' => 'Pixie'
+                )
             )
         );
         
@@ -117,8 +121,10 @@ class RuntimeTest extends \PHPixie\Test\Testcase
                 )
             ),
             array(
-                'fairy' => 'Pixie',
-                'tree'  => 'Oak'
+                'blocks' => array(
+                    'fairy' => 'Pixie',
+                    'tree'  => 'Oak'
+                )
             )
         );
         
@@ -134,8 +140,44 @@ class RuntimeTest extends \PHPixie\Test\Testcase
             array(
                 'content' => 'Blum',
                 'blocks'  => array(
-                    'tree' => 'Tree',
+                    'tree'   => 'Tree',
                     'meadow' => 'Flower'
+                )
+            )
+        );
+        
+        $this->runtimeTest(
+            '<?php echo $this->extension("pixie"); ?>',
+            array(
+                'content' => 'fairy',
+            ),
+            array(
+                'extensionMap'  => array(
+                    'pixie' => 'fairy',
+                )
+            )
+        );
+        
+        $this->runtimeTest(
+            '<?php echo $this->pixie("Trixie"); ?>',
+            array(
+                'content' => 'fairy Trixie',
+            ),
+            array(
+                'extensionMethods'  => array(
+                    'pixie' => function($name) { return 'fairy '.$name; },
+                )
+            )
+        );
+        
+        $this->runtimeTest(
+            '<?php echo $pixie("Trixie"); ?>',
+            array(
+                'content' => 'fairy Trixie',
+            ),
+            array(
+                'extensionAliases'  => array(
+                    'pixie' => function($name) { return 'fairy '.$name; },
                 )
             )
         );
@@ -209,9 +251,9 @@ class RuntimeTest extends \PHPixie\Test\Testcase
         $this->assertSame('5', $output);
     }
     
-    protected function runtimeTest($template, $expects, $blocks = array(), $arrayMethods = array(), $childContent = null, $data = array())
+    protected function runtimeTest($template, $expects, $params = array())
     {
-        $runtime = $this->prepareRuntime($template, $blocks, $arrayMethods, $childContent, $data);
+        $runtime = $this->prepareRuntime($template, $params);
         if($expects == 'exception') {
             $this->assertException(function() use($runtime) {
                 $runtime->run();
@@ -222,17 +264,34 @@ class RuntimeTest extends \PHPixie\Test\Testcase
         }
     }
     
-    protected function prepareRuntime($template, $blocks = array(), $arrayMethods = array(), $childContent = null, $data = array())
+    protected function prepareRuntime($template, $params = array())
     {
+        $params = array_merge(
+            array(
+                'blocks'           => array(),
+                'arrayMethods'     => array(),
+                'childContent'     => null,
+                'data'             => array(),
+                'extensionMap'       => array(),
+                'extensionMethods' => array(),
+                'extensionAliases' => array(),
+            ),
+            $params
+        );
+        
+        $this->method($this->extensions, 'map', $params['extensionMap'], array(), 0);
+        $this->method($this->extensions, 'methods', $params['extensionMethods'], array(), 1);
+        $this->method($this->extensions, 'aliases', $params['extensionAliases'], array(), 2);
+        
         file_put_contents($this->file, $template);
         
-        $this->method($this->arrayData, 'get', $data, array(), 0);
-        foreach($arrayMethods as $key => $set) {
+        $this->method($this->arrayData, 'get', $params['data'], array(), 0);
+        foreach($params['arrayMethods'] as $key => $set) {
             $return = isset($set[2]) ? $set[2] : null;
             $this->method($this->arrayData, $set[0], $return, $set[1], $key+1);
         }
         
-        return $this->runtime($childContent, $blocks);
+        return $this->runtime($params['childContent'], $params['blocks']);
     }
     
     protected function assertRuntime($expects, $runtime)
@@ -278,6 +337,7 @@ class RuntimeTest extends \PHPixie\Test\Testcase
     protected function runtime($childContent = null, $blocks = array())
     {
         return new \PHPixie\Template\Runtime(
+            $this->extensions,
             $this->file,
             $this->arrayData,
             $childContent,

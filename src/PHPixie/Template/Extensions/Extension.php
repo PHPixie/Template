@@ -1,8 +1,8 @@
 <?php
 
-namespace PHPixie\Template\Helpers;
+namespace PHPixie\Template\Extensions;
 
-interface Helper
+interface Extension
 {
     public function name();
     public function methods();

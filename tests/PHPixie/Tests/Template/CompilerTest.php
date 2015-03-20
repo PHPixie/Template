@@ -88,12 +88,12 @@ class CompilerTest extends \PHPixie\Test\Testcase
                 sleep(1);
             }
             
-            file_put_contents($path, '');
+            file_put_contents($path, 'template');
             
             $recompile = !$cacheExists || !$isFileModified;
             if($recompile) {
                 $contents = 'updated';
-                $this->method($format, 'compile', $contents, array($path), 0);
+                $this->method($format, 'compile', $contents, array('template'), 0);
                 
             }else{
                 $contents = 'old';

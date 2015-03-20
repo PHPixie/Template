@@ -4,18 +4,21 @@ namespace PHPixie\Template;
 
 class Runtime
 {
-    protected $helpers;
+    protected $extensions;
     protected $file;
     protected $arrayData;
     protected $childContent;
     protected $blocks;
     
+    protected $extensionMap;
+    protected $methods;
+    
     protected $layout;
     protected $blockStack = array();
     
-    public function __construct($helpers, $file, $arrayData, $childContent = null, $blocks = array())
+    public function __construct($extensions, $file, $arrayData, $childContent = null, $blocks = array())
     {
-        $this->helpers      = $helpers;
+        $this->extensions   = $extensions;
         $this->file         = $file;
         $this->arrayData    = $arrayData;
         $this->childContent = $childContent;
@@ -24,7 +27,10 @@ class Runtime
     
     public function run()
     {
-        extract($this->helpers->aliases());
+        $this->extensionMap = $this->extensions->map();
+        $this->methods      = $this->extensions->methods();
+        
+        extract($this->extensions->aliases());
         extract($this->arrayData->get());
         ob_start();
         
@@ -107,6 +113,16 @@ class Runtime
         }
         
         return null;
+    }
+    
+    protected function extension($name)
+    {
+        return $this->extensionMap[$name];
+    }
+    
+    public function __call($name, $params)
+    {
+        return call_user_func_array($this->methods[$name], $params);
     }
     
     public function getBlocks()

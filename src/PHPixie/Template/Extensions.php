@@ -2,7 +2,7 @@
 
 namespace PHPixie\Template;
 
-class Helpers
+class Extensions
 {
     protected $configData;
     protected $externalExtensions;
@@ -11,9 +11,9 @@ class Helpers
     protected $methods;
     protected $aliases;
     
-    protected $extensionNames = array('php');
+    protected $extensionNames = array('html');
     protected $classMap = array(
-        'php' => '\PHPixie\Template\Extensions\PHP'
+        'html' => '\PHPixie\Template\Extensions\Extension\HTML'
     );
     
     public function __construct($configData, $externalExtensions)
@@ -22,7 +22,7 @@ class Helpers
         $this->externalExtensions = $externalExtensions;
     }
     
-    public function extensions()
+    public function map()
     {
         $this->requireMappedExtensions();
         return $this->extensions;

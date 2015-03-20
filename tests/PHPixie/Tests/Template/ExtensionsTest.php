@@ -3,16 +3,16 @@
 namespace PHPixie\Tests\Template;
 
 /**
- * @coversDefaultClass \PHPixie\Template\Helpers
+ * @coversDefaultClass \PHPixie\Template\Extensions
  */
-class HelpersTest extends \PHPixie\Test\Testcase
+class ExtensionsTest extends \PHPixie\Test\Testcase
 {
     protected $configData;
     protected $externalExtensions = array();
     
     protected $extensions;
     
-    protected $extensionNames = array('php');
+    protected $extensionNames = array('html');
     
     public function setUp()
     {
@@ -28,7 +28,7 @@ class HelpersTest extends \PHPixie\Test\Testcase
     }
     
     /**
-     * @covers ::extensions
+     * @covers ::map
      * @covers ::methods
      * @covers ::aliases
      * @covers ::<protected>
@@ -39,9 +39,21 @@ class HelpersTest extends \PHPixie\Test\Testcase
         $this->mapExtensionsTest(true);
     }
     
+    /**
+     * @covers ::<protected>
+     */
+    public function testBuildExtension()
+    {
+        $this->method($this->configData, 'get', array(), array('aliases', array()), 0);
+        $extensions = $this->extensions()->map();
+        
+        $this->assertSame(1, count($extensions));
+        $this->assertInstance($extensions['html'], '\PHPixie\Template\Extensions\Extension\HTML');
+    }
+    
     protected function mapExtensionsTest($override = false)
     {
-        $name = $override ? 'php' : 'haml';
+        $name = $override ? 'html' : 'haml';
         
         $this->externalExtensions = array(
             $name     => $this->getExtension(),
@@ -90,16 +102,16 @@ class HelpersTest extends \PHPixie\Test\Testcase
         
         $configAliases = array(
             '_' => array(
-                'extension' => 'php',
+                'extension' => 'html',
                 'method'    => 'test'
             )
         );
-        $aliases['_'] = array($extensions['php'], 'test');
+        $aliases['_'] = array($extensions['html'], 'test');
         
         $this->method($this->configData, 'get', $configAliases, array('aliases', array()), 0);
         
         for($i=0; $i<2; $i++) {
-            $this->assertSame($extensions, $mock->extensions());
+            $this->assertSame($extensions, $mock->map());
             $this->assertSame($methods, $mock->methods());
             $this->assertEquals($aliases, $mock->aliases());
         }
@@ -107,12 +119,12 @@ class HelpersTest extends \PHPixie\Test\Testcase
     
     protected function getExtension()
     {
-        return $this->abstractMock('\PHPixie\Template\Helpers\Helper');
+        return $this->abstractMock('\PHPixie\Template\Extensions\Extension');
     }
     
     protected function extensions()
     {
-        return new \PHPixie\Template\Helpers(
+        return new \PHPixie\Template\Extensions(
             $this->configData,
             $this->externalExtensions
         );
@@ -121,7 +133,7 @@ class HelpersTest extends \PHPixie\Test\Testcase
     protected function extensionsMock($methods)
     {
         return $this->getMock(
-            '\PHPixie\Template\Helpers',
+            '\PHPixie\Template\Extensions',
             $methods,
             array(
                 $this->configData,

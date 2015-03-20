@@ -27,8 +27,8 @@ class Compiler
         $cachePath = $this->cacheDirectory().'/'.$hash.'.php';
         
         if(!file_exists($cachePath) || filemtime($cachePath) < filemtime($path)) {
-            
-            $compiled = $format->compile($path);
+            $content  = file_get_contents($path);
+            $compiled = $format->compile($content);
             file_put_contents($cachePath, $compiled);
         }
         
