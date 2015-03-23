@@ -16,22 +16,14 @@ class Runtime
     protected $layout;
     protected $blockStack = array();
     
-    public function __construct($extensions, $file, $arrayData, $childContent = null, $blocks = array())
+    public function __construct($context)
     {
-        $this->extensions   = $extensions;
-        $this->file         = $file;
-        $this->arrayData    = $arrayData;
-        $this->childContent = $childContent;
-        $this->blocks       = $blocks;
+        $this->context = $context;
     }
     
     public function run()
     {
-        $this->extensionMap = $this->extensions->map();
-        $this->methods      = $this->extensions->methods();
-        
-        extract($this->extensions->aliases());
-        extract($this->arrayData->get());
+        extract($this->context->variables());
         ob_start();
         
         $exception = null;
@@ -42,9 +34,7 @@ class Runtime
             $exception = $caughtException;
         }
         
-        if(!empty($this->blockStack)) {
-            $exception = new \PHPixie\Template\Exception("Not all template blocks have been closed in '{$this->file}'");
-        }
+        $this->context->assertBlocksClosed();
         
         if($exception !== null) {
             for($i=0; $i<=count($this->blockStack); $i++) {
@@ -57,14 +47,19 @@ class Runtime
         return ob_get_clean();
     }
     
+    public function render($name, $data = array())
+    {
+        return $this->renderer->render($name, $data);
+    }
+    
+    public function resolve($name)
+    {
+        return $this->resolver->resolve($name);
+    }
+    
     protected function layout($name)
     {
         $this->layout = $name;
-    }
-    
-    public function getLayout()
-    {
-        return $this->layout;
     }
     
     protected function childContent()
@@ -74,45 +69,28 @@ class Runtime
     
     protected function startBlock($name, $onlyIfNotExists = false)
     {
-        if($onlyIfNotExists && $this->blockExists($name)) {
+        if($onlyIfNotExists && $this->context->blockExists($name)) {
             return false;
         }
         
-        array_push($this->blockStack, $name);
-        ob_start();
+        return $this->context->startBlock($name);
         
         return true;
     }
     
     protected function endBlock()
     {
-        if(empty($this->blockStack)) {
-            throw new \PHPixie\Template\Exception("endBlock() called too many times in '{$this->file}'");
-        }
-        
-        $name  = array_pop($this->blockStack);
-        $block = ob_get_clean();
-        
-        
-        if($this->blockExists($name)) {
-            $block = $block.$this->blocks[$name];
-        }
-        
-        $this->blocks[$name] = $block;
+        return $this->context->endBlock($name);
     }
     
     protected function blockExists($name)
     {
-        return array_key_exists($name, $this->blocks);
+        return $this->context->blockExists($name);
     }
     
     protected function block($name)
     {
-        if($this->blockExists($name)) {
-            return $this->blocks[$name];
-        }
-        
-        return null;
+        return $this->context->block($name);
     }
     
     protected function extension($name)
@@ -122,12 +100,7 @@ class Runtime
     
     public function __call($name, $params)
     {
-        return call_user_func_array($this->methods[$name], $params);
-    }
-    
-    public function getBlocks()
-    {
-        return $this->blocks;
+        return $this->context->call($name, $params);
     }
     
     protected function get($path, $default = null)
