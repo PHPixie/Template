@@ -8,20 +8,20 @@ namespace PHPixie\Tests\Template;
 class ContainerTest extends \PHPixie\Test\Testcase
 {
     protected $renderer;
-    protected $templateName = 'pixie';
-    protected $arrayData;
+    protected $template = 'pixie';
+    protected $data;
     
     protected $container;
     
     public function setUp()
     {
-        $this->renderer  = $this->quickMock('\PHPixie\Template\Renderer');
-        $this->arrayData = $this->quickMock('\PHPixie\Template\Container');
+        $this->renderer = $this->quickMock('\PHPixie\Template\Renderer');
+        $this->data     = $this->quickMock('\PHPixie\Slice\Data\Editable');
         
         $this->container = new \PHPixie\Template\Container(
             $this->renderer,
-            $this->templateName,
-            $this->arrayData
+            $this->template,
+            $this->data
         );
     }
 
@@ -35,12 +35,12 @@ class ContainerTest extends \PHPixie\Test\Testcase
     }
     
     /**
-     * @covers ::templateName
+     * @covers ::template
      * @covers ::<protected>
      */
     public function testTemplateName()
     {
-        $this->assertSame($this->templateName, $this->container->templateName());
+        $this->assertSame($this->template, $this->container->template());
     }
     
     /**
@@ -49,7 +49,7 @@ class ContainerTest extends \PHPixie\Test\Testcase
      */
     public function testData()
     {
-        $this->assertSame($this->arrayData, $this->container->data());
+        $this->assertSame($this->data, $this->container->data());
     }
     
     /**
@@ -79,7 +79,7 @@ class ContainerTest extends \PHPixie\Test\Testcase
                 $return     = $this->container;
             }
             
-            $this->method($this->arrayData, $set[0], $dataReturn, $dataParams, 0);
+            $this->method($this->data, $set[0], $dataReturn, $dataParams, 0);
             
             $callback = array($this->container, $set[0]);
             $this->assertSame($return, call_user_func_array($callback, $set[1]));
@@ -92,7 +92,10 @@ class ContainerTest extends \PHPixie\Test\Testcase
      */
     public function testRender()
     {
-        $this->method($this->renderer, 'render', 'pixie', array($this->templateName, $this->arrayData), 0);
+        $data = array('t' => 1);
+        $this->method($this->data, 'get', $data, array(), 0);
+        
+        $this->method($this->renderer, 'render', 'pixie', array($this->template, $data), 0);
         $this->assertSame('pixie', $this->container->render());
     }
 }

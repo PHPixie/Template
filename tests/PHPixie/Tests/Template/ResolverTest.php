@@ -8,6 +8,7 @@ namespace PHPixie\Tests\Template;
 class ResolverTest extends \PHPixie\Test\Testcase
 {
     protected $loaders;
+    protected $compiler;
     protected $configData;
     
     protected $resolver;
@@ -19,7 +20,8 @@ class ResolverTest extends \PHPixie\Test\Testcase
     
     public function setUp()
     {
-        $this->loaders = $this->quickMock('\PHPixie\Template\Locators');
+        $this->loaders  = $this->quickMock('\PHPixie\Template\Locators');
+        $this->compiler = $this->quickMock('\PHPixie\Template\Compiler');
         $this->configData = $this->getData();
         
         $loaderConfig = $this->getData();
@@ -32,6 +34,7 @@ class ResolverTest extends \PHPixie\Test\Testcase
         
         $this->resolver = new \PHPixie\Template\Resolver(
             $this->loaders,
+            $this->compiler,
             $this->configData
         );
     }
@@ -52,14 +55,20 @@ class ResolverTest extends \PHPixie\Test\Testcase
     public function testResolve()
     {
         $file = 'fairy.php';
+        $compiledFile = 'trixie.php';
         
-        $this->method($this->loader, 'getTemplateFile', $file, array('trixie'), 0);
-        $this->assertSame($file, $this->resolver->resolve('trixie'));
-        $this->assertSame($file, $this->resolver->resolve('trixie'));
+        $templateMap = array(
+            'trixie' => 'trixie',
+            'pixie'  => 'fairy'
+        );
         
-        $this->method($this->loader, 'getTemplateFile', $file, array('fairy'), 0);
-        $this->assertSame($file, $this->resolver->resolve('pixie'));
-        $this->assertSame($file, $this->resolver->resolve('pixie'));
+        foreach($templateMap as $template => $override) {
+            $this->method($this->loader, 'getTemplateFile', $file, array($override), 0);
+            $this->method($this->compiler, 'compile', $compiledFile, array($file), 0);
+            
+            $this->assertSame($compiledFile, $this->resolver->resolve($template));
+            $this->assertSame($compiledFile, $this->resolver->resolve($template));
+        }
         
         $this->method($this->loader, 'getTemplateFile', null, array('blum'), 0);
         $resolver = $this->resolver;

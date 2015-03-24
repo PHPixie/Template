@@ -23,7 +23,7 @@ class PrefixTest extends \PHPixie\Test\Testcase
         $this->method($this->configData, 'get', $this->defaultPrefix, array('defaultPrefix', 'default'), 0);
         
         $resolversConfig = $this->getData();
-        $this->method($this->configData, 'slice', $resolversConfig, array('resolvers'), 1);
+        $this->method($this->configData, 'slice', $resolversConfig, array('locators'), 1);
         
         $this->resolvers = array(
             'default' => $this->abstractMock('\PHPixie\Template\Locators\Locator'),

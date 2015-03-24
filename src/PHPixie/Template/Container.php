@@ -5,46 +5,49 @@ namespace PHPixie\Template;
 class Container
 {
     protected $renderer;
-    protected $templateName;
-    protected $arrayData;
+    protected $template;
+    protected $data;
     
-    public function __construct($renderer, $templateName, $arrayData)
+    public function __construct($renderer, $template, $data)
     {
-        $this->renderer     = $renderer;
-        $this->templateName = $templateName;
-        $this->arrayData    = $arrayData;
+        $this->renderer = $renderer;
+        $this->template = $template;
+        $this->data     = $data;
     }
     
-    public function templateName()
+    public function template()
     {
-        return $this->templateName;
+        return $this->template;
     }
     
     public function data()
     {
-        return $this->arrayData;
+        return $this->data;
     }
     
     public function get($path, $default = null)
     {
-        return $this->arrayData->get($path, $default);
+        return $this->data->get($path, $default);
         return $this;
     }
     
     public function set($path, $data)
     {
-        $this->arrayData->set($path, $data);
+        $this->data->set($path, $data);
         return $this;
     }
     
     public function remove($path)
     {
-        $this->arrayData->remove($path);
+        $this->data->remove($path);
         return $this;
     }
 
     public function render()
     {
-        return $this->renderer->render($this->templateName, $this->arrayData);
+        return $this->renderer->render(
+            $this->template,
+            $this->data->get()
+        );
     }
 }

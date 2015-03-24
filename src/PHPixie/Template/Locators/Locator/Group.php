@@ -6,7 +6,7 @@ class Group
 {
     protected $locators = array();
     
-    public function __construct($resolvers, $configData)
+    public function __construct($locators, $configData)
     {
         $locatorsConfig = $configData->slice('locators');
         foreach($locatorsConfig->keys(null, true) as $key) {

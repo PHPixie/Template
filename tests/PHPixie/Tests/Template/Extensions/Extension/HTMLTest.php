@@ -20,7 +20,7 @@ class HTMLTest extends \PHPixie\Test\Testcase
      */
     public function testName()
     {
-        $this->assertSame(array('html'), $this->html->name());
+        $this->assertSame('html', $this->html->name());
     }
     
     /**

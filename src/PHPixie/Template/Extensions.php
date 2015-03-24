@@ -21,17 +21,17 @@ class Extensions
         $this->configData = $configData;
         $this->externalExtensions = $externalExtensions;
     }
-    
-    public function map()
-    {
-        $this->requireMappedExtensions();
-        return $this->extensions;
-    }
 
-    public function methods()
+    public function get($name)
     {
         $this->requireMappedExtensions();
-        return $this->methods;
+        return $this->extensions[$name];
+    }
+    
+    public function method($name)
+    {
+        $this->requireMappedExtensions();
+         return $this->methods[$name];
     }
     
     public function aliases()
