@@ -37,7 +37,7 @@ class Compiler
     protected function cacheDirectory()
     {
         if($this->cacheDirectory === null) {
-            $this->cacheDirectory = $this->configData->getRequired('directory');
+            $this->cacheDirectory = $this->configData->getRequired('cacheDirectory');
         }
         
         return $this->cacheDirectory;

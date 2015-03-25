@@ -54,7 +54,7 @@ class CompilerTest extends \PHPixie\Test\Testcase
     {
         $this->compileTest(false);
         
-        $this->method($this->configData, 'getRequired', $this->cacheDirectory, array('directory'), 0);
+        $this->method($this->configData, 'getRequired', $this->cacheDirectory, array('cacheDirectory'), 0);
         $this->compileTest(true);
         $this->compileTest(true, true);
         $this->compileTest(true, true, true);
