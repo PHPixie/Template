@@ -81,7 +81,7 @@ class Runtime
     
     protected function childContent()
     {
-        return $this->context->childContent();
+        echo $this->context->childContent();
     }
     
     protected function blockExists($name)
@@ -91,7 +91,7 @@ class Runtime
     
     protected function block($name)
     {
-        return $this->context->block($name);
+        echo $this->context->block($name);
     }
     
     protected function extension($name)

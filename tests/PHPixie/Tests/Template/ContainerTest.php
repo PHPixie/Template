@@ -55,6 +55,8 @@ class ContainerTest extends \PHPixie\Test\Testcase
     /**
      * @covers ::get
      * @covers ::set
+     * @covers ::__get
+     * @covers ::__set
      * @covers ::remove
      * @covers ::<protected>
      */
@@ -84,6 +86,20 @@ class ContainerTest extends \PHPixie\Test\Testcase
             $callback = array($this->container, $set[0]);
             $this->assertSame($return, call_user_func_array($callback, $set[1]));
         }
+    }
+    
+    /**
+     * @covers ::__get
+     * @covers ::__set
+     * @covers ::<protected>
+     */
+    public function testGetSet()
+    {
+        $this->method($this->data, 'set', null, array('pixie', 5), 0);
+        $this->container->pixie = 5;
+        
+        $this->method($this->data, 'get', 5, array('pixie', null), 0);
+        $this->assertSame(5, $this->container->pixie);
     }
     
     /**

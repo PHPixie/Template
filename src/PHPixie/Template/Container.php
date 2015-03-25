@@ -50,4 +50,14 @@ class Container
             $this->data->get()
         );
     }
+    
+    public function __set($path, $data)
+    {
+        $this->set($path, $data);
+    }
+    
+    public function __get($path)
+    {
+        return $this->get($path);
+    }
 }

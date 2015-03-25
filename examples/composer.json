@@ -1,0 +1,6 @@
+{
+    "require": {
+        "phpixie/template": "3.*@dev",
+        "phpixie/slice": "3.*@dev"
+    }
+}

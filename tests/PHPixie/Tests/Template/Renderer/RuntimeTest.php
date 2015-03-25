@@ -15,6 +15,7 @@ class RuntimeTest extends \PHPixie\Test\Testcase
     protected $resolver;
     protected $data;
     protected $file;
+    protected $fileAt = 0;
     
     public function setUp()
     {
@@ -30,13 +31,11 @@ class RuntimeTest extends \PHPixie\Test\Testcase
         
         $this->data = $this->quickMock('\PHPixie\Slice\Data\Editable');
         $this->method($this->context, 'data', $this->data, array());
-        
-        $this->file = tempnam(sys_get_temp_dir(), 'phpixie_template');
     }
     
     public function tearDown()
     {
-        if(file_exists($this->file)) {
+        if($this->file !== null && file_exists($this->file)) {
             unlink($this->file);
         }
     }
@@ -91,26 +90,19 @@ class RuntimeTest extends \PHPixie\Test\Testcase
         $this->method($this->context, 'callExtensionMethod', 5, array('pixie', array(2, 3)), 3);
         $this->renderTest('<?php echo $this->pixie(2, 3); ?>', '5', 1);
         
-        $proxySets = array(
-            array('childContent'),
-            array('blockExists', true),
-            array('block', true),
-            array('extension', true),
-        );
-        
-        foreach($proxySets as $set) {
-            $template = '<?php echo $this->'.$set[0].'(';
-            if(isset($set[1])) {
-                $params = array('test');
-                $template.='"test"';
-            }else{
-                $params = array();
-            }
-            $template.='); ?>';
-            
-            $this->method($this->context, $set[0], 5, $params, 3);
+        foreach(array('blockExists', 'extension') as $method) {
+            $template = '<?php echo $this->'.$method.'("test"); ?>';
+            $this->method($this->context, $method, 5, array('test'), 3);
             $this->renderTest($template, '5', 1);
         }
+        
+        $template = '<?php $this->block("test"); ?>';
+        $this->method($this->context, 'block', 5, array('test'), 3);
+        $this->renderTest($template, '5', 1);
+        
+        $template = '<?php $this->childContent(); ?>';
+        $this->method($this->context, 'childContent', 5, array(), 3);
+        $this->renderTest($template, '5', 1);
         
         $this->method($this->context, 'setLayout', 5, array('pixie'), 3);
         $this->renderTest('<?php $this->layout("pixie"); ?>', '', 1);
@@ -208,6 +200,7 @@ class RuntimeTest extends \PHPixie\Test\Testcase
         
         $contextAt++;
         
+        $this->file = tempnam(sys_get_temp_dir(), 'phpixie_template'.$this->fileAt++);
         file_put_contents($this->file, $template);
         $this->method($this->resolver, 'resolve', $this->file, array('pixie'), 0);
         

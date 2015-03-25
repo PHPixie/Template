@@ -72,7 +72,7 @@ class TemplateTest extends \PHPixie\Test\Testcase
     }
     
     /**
-     * @covers ::renderer
+     * @covers ::render
      * @covers ::<protected>
      */
     public function testRender()
@@ -103,5 +103,14 @@ class TemplateTest extends \PHPixie\Test\Testcase
         $data = array('t' => 1);
         $this->method($this->builder, 'container', $container, array('pixie', $data), 0);
         $this->assertSame($container, $this->template->get('pixie', $data));
+    }
+    
+    /**
+     * @covers ::builder
+     * @covers ::<protected>
+     */
+    public function testBuilder()
+    {
+        $this->assertSame($this->builder, $this->template->builder());
     }
 }
