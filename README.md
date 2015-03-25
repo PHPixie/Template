@@ -1,6 +1,6 @@
 # Templating
 PHPixie Templating library
-Highly extensible templating library
+
 
 [![Build Status](https://travis-ci.org/PHPixie/Templating.svg?branch=master)](https://travis-ci.org/PHPixie/Templating)
 [![Test Coverage](https://codeclimate.com/github/PHPixie/Templating/badges/coverage.svg)](https://codeclimate.com/github/PHPixie/Templating)
