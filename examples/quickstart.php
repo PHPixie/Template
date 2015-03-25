@@ -16,4 +16,6 @@ echo $template->render('fairy', array(
 ));
 
 $fairy = $template->get('fairy');
-$fairy->name 
+$fairy->name = 'Blum';
+
+echo $fairy->render();
