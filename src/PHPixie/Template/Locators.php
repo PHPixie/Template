@@ -28,7 +28,7 @@ class Locators
     public function buildFromConfig($configData) {
         $type = $configData->get('type', 'directory');
         if(!in_array($type, $this->locators, true)) {
-            throw new \PHPixie\Template\Exception("Loader type '$type' does not exist");
+            throw new \PHPixie\Template\Exception("Locator type '$type' does not exist");
         }
         
         return $this->$type($configData);

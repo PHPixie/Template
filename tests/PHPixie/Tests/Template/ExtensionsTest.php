@@ -28,13 +28,15 @@ class ExtensionsTest extends \PHPixie\Test\Testcase
     }
     
     /**
+     * @covers ::get
+     * @covers ::getMethod
      * @covers ::aliases
      * @covers ::<protected>
      */
     public function testMapExtensions()
     {
-        //$this->mapExtensionsTest(false);
-        //$this->mapExtensionsTest(true);
+        $this->mapExtensionsTest(false);
+        $this->mapExtensionsTest(true);
     }
     
     /**
@@ -42,13 +44,10 @@ class ExtensionsTest extends \PHPixie\Test\Testcase
      */
     public function testBuildExtension()
     {
-        /*
         $this->method($this->configData, 'get', array(), array('aliases', array()), 0);
-        $extensions = $this->extensions()->map();
+        $html = $this->extensions()->get('html');
         
-        $this->assertSame(1, count($extensions));
-        $this->assertInstance($extensions['html'], '\PHPixie\Template\Extensions\Extension\HTML');
-        */
+        $this->assertInstance($html, '\PHPixie\Template\Extensions\Extension\HTML');
     }
     
     protected function mapExtensionsTest($override = false)
@@ -110,11 +109,15 @@ class ExtensionsTest extends \PHPixie\Test\Testcase
         
         $this->method($this->configData, 'get', $configAliases, array('aliases', array()), 0);
         
-        for($i=0; $i<2; $i++) {
-            $this->assertSame($extensions, $mock->map());
-            $this->assertSame($methods, $mock->methods());
-            $this->assertEquals($aliases, $mock->aliases());
+        foreach($extensions as $name => $extension) {
+            $this->assertSame($extension, $mock->get($name));
         }
+        
+        foreach($methods as $name => $method) {
+            $this->assertSame($method, $mock->getMethod($name));
+        }
+        
+        $this->assertEquals($aliases, $mock->aliases());
     }
     
     protected function getExtension()

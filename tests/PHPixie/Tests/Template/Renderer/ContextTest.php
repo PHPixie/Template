@@ -135,7 +135,7 @@ class ContextTest extends \PHPixie\Test\Testcase
             return $a.$b; 
         };
         
-        $this->method($this->extensions, 'method', $method, array('pixie'), 0, true);
+        $this->method($this->extensions, 'getMethod', $method, array('pixie'), 0, true);
         $this->assertSame('FairyTrixie', $this->context->callExtensionMethod('pixie', array('Fairy', 'Trixie')));
     }
     

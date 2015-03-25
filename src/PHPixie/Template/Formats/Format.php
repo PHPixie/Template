@@ -4,5 +4,6 @@ namespace PHPixie\Template\Formats;
 
 interface Format
 {
-    public function compile($file);
+    public function handledExtensions();
+    public function compile($contents);
 }

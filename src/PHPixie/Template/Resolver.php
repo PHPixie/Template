@@ -5,15 +5,15 @@ namespace PHPixie\Template;
 class Resolver
 {
     protected $compiler;
-    protected $loader;
+    protected $locator;
     protected $overrides;
     protected $map = array();
     
-    public function __construct($loaders, $compiler, $configData)
+    public function __construct($locators, $compiler, $configData)
     {
-        $this->compiler = $compiler;
-        $loaderConfig = $configData->slice('loader');
-        $this->loader = $loaders->buildFromConfig($loaderConfig);
+        $this->compiler  = $compiler;
+        $locatorConfig   = $configData->slice('locator');
+        $this->locator   = $locators->buildFromConfig($locatorConfig);
         $this->overrides = $configData->get('overrides', array());
     }
     
@@ -23,7 +23,6 @@ class Resolver
             return $this->map[$name];
         }
         
-        
         if(array_key_exists($name, $this->overrides)) {
             $templateName = $this->overrides[$name];
             
@@ -31,7 +30,7 @@ class Resolver
             $templateName = $name;
         }
         
-        $file = $this->loader->getTemplateFile($templateName);
+        $file = $this->locator->getTemplateFile($templateName);
         if($file === null) {
             throw new \PHPixie\Template\Exception("Template '$name' could not be found");
         }

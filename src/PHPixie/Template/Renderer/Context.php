@@ -87,7 +87,7 @@ class Context
     
     public function callExtensionMethod($method, $params)
     {
-        $method = $this->extensions->method($method);
+        $method = $this->extensions->getMethod($method);
         return call_user_func_array($method, $params);
     }
     

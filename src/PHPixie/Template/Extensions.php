@@ -28,7 +28,7 @@ class Extensions
         return $this->extensions[$name];
     }
     
-    public function method($name)
+    public function getMethod($name)
     {
         $this->requireMappedExtensions();
          return $this->methods[$name];
