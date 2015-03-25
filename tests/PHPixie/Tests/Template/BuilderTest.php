@@ -18,7 +18,7 @@ class BuilderTest extends \PHPixie\Test\Testcase
     
     public function setUp()
     {
-        $this->slice = $this->abstractMock('\PHPixie\Slice');
+        $this->slice = $this->quickMock('\PHPixie\Slice');
         $this->configData = $this->getData();
         
         for($i=0;$i<2;$i++) {

@@ -1,7 +1,7 @@
 {
-    "name": "phpixie/orm",
-    "description": "ORM library for PHPixie",
-    "keywords": ["orm", "database"],
+    "name": "phpixie/template",
+    "description": "Templating library for PHPixie",
+    "keywords": ["templating", "template"],
     "homepage": "http://phpixie.com",
     "type": "library",
     "license": "BSD",
