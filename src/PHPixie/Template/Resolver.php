@@ -9,11 +9,11 @@ class Resolver
     protected $overrides;
     protected $map = array();
     
-    public function __construct($locators, $compiler, $configData)
+    public function __construct($filesystem, $compiler, $configData)
     {
         $this->compiler  = $compiler;
         $locatorConfig   = $configData->slice('locator');
-        $this->locator   = $locators->buildFromConfig($locatorConfig);
+        $this->locator   = $filesystem->locator($locatorConfig);
         $this->overrides = $configData->get('overrides', array());
     }
     
@@ -30,7 +30,7 @@ class Resolver
             $templateName = $name;
         }
         
-        $file = $this->locator->getTemplateFile($templateName);
+        $file = $this->locator->locate($templateName);
         if($file === null) {
             throw new \PHPixie\Template\Exception("Template '$name' could not be found");
         }

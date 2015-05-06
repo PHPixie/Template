@@ -3,10 +3,11 @@
 require_once('vendor/autoload.php');
 
 $slice = new \PHPixie\Slice();
-$template = new \PHPixie\Template($slice, $slice->arrayData(array(
+$filesystem = new \PHPixie\Filesystem(__DIR__);
+$template = new \PHPixie\Template($slice, $filesystem, $slice->arrayData(array(
     'resolver' => array(
         'locator' => array(
-            'directory' => __DIR__.'/templates/'
+            'directory' => '/templates/'
         )
     )
 )));

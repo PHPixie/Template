@@ -8,17 +8,21 @@ namespace PHPixie\Tests\Template;
 class BuilderTest extends \PHPixie\Test\Testcase
 {
     protected $slice;
+    protected $filesystem;
     protected $configData;
     protected $externalExtensions = array();
     protected $externalFormats    = array();
     
     protected $builder;
     
+    protected $filesystemRoot;
     protected $slices = array();
     
     public function setUp()
     {
         $this->slice = $this->quickMock('\PHPixie\Slice');
+        $this->filesystem = $this->quickMock('\PHPixie\Filesystem');
+        
         $this->configData = $this->getData();
         
         for($i=0;$i<2;$i++) {
@@ -39,6 +43,7 @@ class BuilderTest extends \PHPixie\Test\Testcase
         
         $this->builder = new \PHPixie\Template\Builder(
             $this->slice,
+            $this->filesystem,
             $this->configData,
             $this->externalExtensions,
             $this->externalFormats
@@ -71,21 +76,6 @@ class BuilderTest extends \PHPixie\Test\Testcase
     }
     
     /**
-     * @covers ::locators
-     * @covers ::<protected>
-     */
-    public function testLocators()
-    {
-        $locators = $this->builder->locators();
-        
-        $this->assertInstance($locators, '\PHPixie\Template\Locators', array(
-            
-        ));
-        
-        $this->assertSame($locators, $this->builder->locators());
-    }
-    
-    /**
      * @covers ::formats
      * @covers ::<protected>
      */
@@ -109,6 +99,7 @@ class BuilderTest extends \PHPixie\Test\Testcase
         $compiler = $this->builder->compiler();
         
         $this->assertInstance($compiler, '\PHPixie\Template\Compiler', array(
+            'filesystem' => $this->filesystem,
             'formats'    => $this->builder->formats(),
             'configData' => $this->slices['compiler']
         ));
@@ -122,17 +113,13 @@ class BuilderTest extends \PHPixie\Test\Testcase
      */
     public function testResolver()
     {
-        $mock = $this->builderMock(array('locators'));
-        $locators = $this->quickMock('\PHPixie\Template\Locators');
-        $this->method($mock, 'locators', $locators, array());
-        
-        $resolver = $mock->resolver();
+        $resolver = $this->builder->resolver();
         
         $this->assertInstance($resolver, '\PHPixie\Template\Resolver', array(
             'compiler'   => $this->builder->compiler(),
         ));
         
-        $this->assertSame($resolver, $mock->resolver());
+        $this->assertSame($resolver, $this->builder->resolver());
     }
     
     /**
@@ -159,7 +146,7 @@ class BuilderTest extends \PHPixie\Test\Testcase
     {
         $data = array('t' => 1);
         $arrayData = $this->getData();
-        $this->method($this->slice, 'arrayData', $arrayData, array($data), 0);
+        $this->method($this->slice, 'editableArrayData', $arrayData, array($data), 0);
         
         $container = $this->builder->container('pixie', $data);
         

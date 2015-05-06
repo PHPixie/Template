@@ -5,15 +5,18 @@ namespace PHPixie\Template;
 class Builder
 {
     protected $slice;
+    protected $filesystem;
+    
     protected $configData;
     protected $externalExtensions;
     protected $externalFormats;
     
     protected $instances = array();
     
-    public function __construct($slice, $configData, $externalExtensions, $externalFormats)
+    public function __construct($slice, $filesystem, $configData, $externalExtensions, $externalFormats)
     {
         $this->slice              = $slice;
+        $this->filesystem         = $filesystem;
         $this->configData         = $configData;
         $this->externalExtensions = $externalExtensions;
         $this->externalFormats    = $externalFormats;
@@ -22,11 +25,6 @@ class Builder
     public function extensions()
     {
         return $this->instance('extensions');
-    }
-    
-    public function locators()
-    {
-        return $this->instance('locators');
     }
     
     public function formats()
@@ -51,7 +49,7 @@ class Builder
     
     public function container($name, $data = array())
     {
-        $data = $this->slice->arrayData($data);
+        $data = $this->slice->editableArrayData($data);
         return new Container(
             $this->renderer(),
             $name,
@@ -77,11 +75,6 @@ class Builder
         );
     }
     
-    protected function buildLocators()
-    {
-        return new Locators();
-    }
-    
     protected function buildFormats()
     {
         return new Formats($this->externalFormats);
@@ -90,6 +83,7 @@ class Builder
     protected function buildCompiler()
     {
         return new Compiler(
+            $this->filesystem,
             $this->formats(),
             $this->configData->slice('compiler')
         );
@@ -98,7 +92,7 @@ class Builder
     protected function buildResolver()
     {
         return new Resolver(
-            $this->locators(),
+            $this->filesystem,
             $this->compiler(),
             $this->configData->slice('resolver')
         );
