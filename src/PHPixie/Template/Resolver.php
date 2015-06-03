@@ -5,16 +5,15 @@ namespace PHPixie\Template;
 class Resolver
 {
     protected $compiler;
-    protected $locator;
+    protected $filesystemLocator;
     protected $overrides;
     protected $map = array();
     
-    public function __construct($filesystem, $compiler, $configData)
+    public function __construct($compiler, $filesystemLocator, $configData)
     {
-        $this->compiler  = $compiler;
-        $locatorConfig   = $configData->slice('locator');
-        $this->locator   = $filesystem->locator($locatorConfig);
-        $this->overrides = $configData->get('overrides', array());
+        $this->compiler          = $compiler;
+        $this->filesystemLocator = $filesystemLocator;
+        $this->overrides         = $configData->get('overrides', array());
     }
     
     public function resolve($name)
@@ -30,7 +29,7 @@ class Resolver
             $templateName = $name;
         }
         
-        $file = $this->locator->locate($templateName);
+        $file = $this->filesystemLocator->locate($templateName);
         if($file === null) {
             throw new \PHPixie\Template\Exception("Template '$name' could not be found");
         }

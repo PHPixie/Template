@@ -7,7 +7,7 @@ namespace PHPixie\Tests\Template;
  */
 class CompilerTest extends \PHPixie\Test\Testcase
 {
-    protected $filesystem;
+    protected $filesystemRoot;
     protected $configData;
     protected $formats;
     protected $compiler;
@@ -17,12 +17,12 @@ class CompilerTest extends \PHPixie\Test\Testcase
     
     public function setUp()
     {
-        $this->filesystem = $this->quickMock('\PHPixie\Filesystem');
-        $this->configData = $this->quickMock('\PHPixie\Slice\Data');
-        $this->formats    = $this->quickMock('\PHPixie\Template\Formats');
+        $this->filesystemRoot = $this->quickMock('\PHPixie\Filesystem\Root');
+        $this->configData     = $this->quickMock('\PHPixie\Slice\Data');
+        $this->formats        = $this->quickMock('\PHPixie\Template\Formats');
         
         $this->compiler = new \PHPixie\Template\Compiler(
-            $this->filesystem,
+            $this->filesystemRoot,
             $this->formats,
             $this->configData
         );
@@ -58,7 +58,7 @@ class CompilerTest extends \PHPixie\Test\Testcase
         $this->compileTest(false);
         
         $this->method($this->configData, 'getRequired', $this->cacheDirectory, array('cacheDirectory'), 0);
-        $this->method($this->filesystem, 'rootPath', $this->cacheDirectory, array($this->cacheDirectory), 0);
+        $this->method($this->filesystemRoot, 'path', $this->cacheDirectory, array($this->cacheDirectory), 0);
         $this->compileTest(true);
         $this->compileTest(true, true);
         $this->compileTest(true, true, true);

@@ -8,7 +8,8 @@ namespace PHPixie\Tests;
 class TemplateTest extends \PHPixie\Test\Testcase
 {
     protected $slice;
-    protected $filesystem;
+    protected $filesystemRoot;
+    protected $filesystemLocator;
     protected $configData;
     protected $externalExtensions = array();
     protected $externalFormats = array();
@@ -17,9 +18,10 @@ class TemplateTest extends \PHPixie\Test\Testcase
     
     public function setUp()
     {
-        $this->slice      = $this->quickMock('\PHPixie\Slice');
-        $this->filesystem = $this->quickMock('\PHPixie\Filesystem');
-        $this->configData = $this->abstractMock('\PHPixie\Slice\Data');
+        $this->slice             = $this->quickMock('\PHPixie\Slice');
+        $this->filesystemRoot    = $this->quickMock('\PHPixie\Filesystem\Locators\Locator');
+        $this->filesystemLocator = $this->quickMock('\PHPixie\Filesystem\Locators\Locator');
+        $this->configData        = $this->abstractMock('\PHPixie\Slice\Data');
         
         $externalExtensions = array();
         $externalFormats = array();
@@ -37,7 +39,8 @@ class TemplateTest extends \PHPixie\Test\Testcase
         $this->builder = $this->quickMock('\PHPixie\Template\Builder');
         $this->method($this->template, 'buildBuilder', $this->builder, array(
             $this->slice,
-            $this->filesystem,
+            $this->filesystemRoot,
+            $this->filesystemLocator,
             $this->configData,
             $this->externalExtensions,
             $this->externalFormats
@@ -45,7 +48,8 @@ class TemplateTest extends \PHPixie\Test\Testcase
         
         $this->template->__construct(
             $this->slice,
-            $this->filesystem,
+            $this->filesystemRoot,
+            $this->filesystemLocator,
             $this->configData,
             $this->externalExtensions,
             $this->externalFormats
@@ -69,7 +73,8 @@ class TemplateTest extends \PHPixie\Test\Testcase
     {
         $template = new \PHPixie\Template(
             $this->slice,
-            $this->filesystem,
+            $this->filesystemRoot,
+            $this->filesystemLocator,
             $this->configData,
             $this->externalExtensions,
             $this->externalFormats
@@ -79,7 +84,8 @@ class TemplateTest extends \PHPixie\Test\Testcase
         
         $this->assertInstance($builder, '\PHPixie\Template\Builder', array(
             'slice'              => $this->slice,
-            'filesystem'         => $this->filesystem,
+            'filesystemRoot'     => $this->filesystemRoot,
+            'filesystemLocator'  => $this->filesystemLocator,
             'configData'         => $this->configData,
             'externalExtensions' => $this->externalExtensions,
             'externalFormats'    => $this->externalFormats

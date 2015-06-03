@@ -5,7 +5,7 @@ namespace PHPixie\Template;
 class Builder
 {
     protected $slice;
-    protected $filesystem;
+    protected $locator;
     
     protected $configData;
     protected $externalExtensions;
@@ -13,10 +13,18 @@ class Builder
     
     protected $instances = array();
     
-    public function __construct($slice, $filesystem, $configData, $externalExtensions, $externalFormats)
+    public function __construct(
+        $slice,
+        $filesystemRoot,
+        $filesystemLocator,
+        $configData,
+        $externalExtensions,
+        $externalFormats
+    )
     {
         $this->slice              = $slice;
-        $this->filesystem         = $filesystem;
+        $this->filesystemRoot     = $filesystemRoot;
+        $this->filesystemLocator  = $filesystemLocator;
         $this->configData         = $configData;
         $this->externalExtensions = $externalExtensions;
         $this->externalFormats    = $externalFormats;
@@ -83,7 +91,7 @@ class Builder
     protected function buildCompiler()
     {
         return new Compiler(
-            $this->filesystem,
+            $this->filesystemRoot,
             $this->formats(),
             $this->configData->slice('compiler')
         );
@@ -92,8 +100,8 @@ class Builder
     protected function buildResolver()
     {
         return new Resolver(
-            $this->filesystem,
             $this->compiler(),
+            $this->filesystemLocator,
             $this->configData->slice('resolver')
         );
     }

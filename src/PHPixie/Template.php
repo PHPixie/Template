@@ -6,9 +6,23 @@ class Template
 {
     protected $builder;
     
-    public function __construct($slice, $filesystem, $configData, $extensions = array(), $formats = array())
+    public function __construct(
+        $slice,
+        $filesystemRoot,
+        $filesystemLocator,
+        $configData,
+        $externalExtensions = array(),
+        $externalFormats    = array()
+    )
     {
-        $this->builder = $this->buildBuilder($slice, $filesystem, $configData, $extensions, $formats);
+        $this->builder = $this->buildBuilder(
+            $slice,
+            $filesystemRoot,
+            $filesystemLocator,
+            $configData,
+            $externalExtensions,
+            $externalFormats
+        );
     }
     
     public function render($name, $data = array())
@@ -26,8 +40,22 @@ class Template
         return $this->builder;
     }
     
-    protected function buildBuilder($slice, $filesystem, $configData, $extension, $formats)
+    protected function buildBuilder(
+        $slice,
+        $filesystemRoot,
+        $filesystemLocator,
+        $configData,
+        $externalExtensions,
+        $externalFormats
+    )
     {
-        return new Template\Builder($slice, $filesystem, $configData, $extension, $formats);
+        return new Template\Builder(
+            $slice,
+            $filesystemRoot,
+            $filesystemLocator,
+            $configData,
+            $externalExtensions,
+            $externalFormats
+        );
     }
 }

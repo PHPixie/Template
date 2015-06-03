@@ -4,17 +4,17 @@ namespace PHPixie\Template;
 
 class Compiler
 {
-    protected $filesystem;
+    protected $filesystemRoot;
     protected $formats;
     protected $configData;
     
     protected $cacheDirectory;
     
-    public function __construct($filesystem, $formats, $configData)
+    public function __construct($filesystemRoot, $formats, $configData)
     {
-        $this->filesystem = $filesystem;
-        $this->formats    = $formats;
-        $this->configData = $configData;
+        $this->filesystemRoot = $filesystemRoot;
+        $this->formats        = $formats;
+        $this->configData     = $configData;
     }
     
     public function compile($path)
@@ -40,7 +40,7 @@ class Compiler
     {
         if($this->cacheDirectory === null) {
             $path = $this->configData->getRequired('cacheDirectory');
-            $this->cacheDirectory = $this->filesystem->rootPath($path);
+            $this->cacheDirectory = $this->filesystemRoot->path($path);
         }
         
         return $this->cacheDirectory;

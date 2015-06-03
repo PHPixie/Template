@@ -8,22 +8,22 @@ namespace PHPixie\Tests\Template;
 class BuilderTest extends \PHPixie\Test\Testcase
 {
     protected $slice;
-    protected $filesystem;
+    protected $filesystemRoot;
+    protected $filesystemLocator;
     protected $configData;
     protected $externalExtensions = array();
     protected $externalFormats    = array();
     
     protected $builder;
     
-    protected $filesystemRoot;
     protected $slices = array();
     
     public function setUp()
     {
-        $this->slice = $this->quickMock('\PHPixie\Slice');
-        $this->filesystem = $this->quickMock('\PHPixie\Filesystem');
-        
-        $this->configData = $this->getData();
+        $this->slice             = $this->quickMock('\PHPixie\Slice');
+        $this->filesystemRoot    = $this->quickMock('\PHPixie\Filesystem\Root');
+        $this->filesystemLocator = $this->quickMock('\PHPixie\Filesystem\Locators\Locator');
+        $this->configData        = $this->getData();
         
         for($i=0;$i<2;$i++) {
             $this->externalExtensions[]= $this->abstractMock('\PHPixie\Template\Extensions\Extension');
@@ -43,7 +43,8 @@ class BuilderTest extends \PHPixie\Test\Testcase
         
         $this->builder = new \PHPixie\Template\Builder(
             $this->slice,
-            $this->filesystem,
+            $this->filesystemRoot,
+            $this->filesystemLocator,
             $this->configData,
             $this->externalExtensions,
             $this->externalFormats
@@ -99,9 +100,9 @@ class BuilderTest extends \PHPixie\Test\Testcase
         $compiler = $this->builder->compiler();
         
         $this->assertInstance($compiler, '\PHPixie\Template\Compiler', array(
-            'filesystem' => $this->filesystem,
-            'formats'    => $this->builder->formats(),
-            'configData' => $this->slices['compiler']
+            'filesystemRoot' => $this->filesystemRoot,
+            'formats'        => $this->builder->formats(),
+            'configData'     => $this->slices['compiler']
         ));
         
         $this->assertSame($compiler, $this->builder->compiler());
@@ -116,7 +117,8 @@ class BuilderTest extends \PHPixie\Test\Testcase
         $resolver = $this->builder->resolver();
         
         $this->assertInstance($resolver, '\PHPixie\Template\Resolver', array(
-            'compiler'   => $this->builder->compiler(),
+            'compiler'          => $this->builder->compiler(),
+            'filesystemLocator' => $this->filesystemLocator,
         ));
         
         $this->assertSame($resolver, $this->builder->resolver());
