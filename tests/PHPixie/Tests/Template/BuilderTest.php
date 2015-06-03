@@ -8,9 +8,9 @@ namespace PHPixie\Tests\Template;
 class BuilderTest extends \PHPixie\Test\Testcase
 {
     protected $slice;
-    protected $filesystemRoot;
     protected $filesystemLocator;
     protected $configData;
+    protected $filesystemRoot;
     protected $externalExtensions = array();
     protected $externalFormats    = array();
     
@@ -21,9 +21,9 @@ class BuilderTest extends \PHPixie\Test\Testcase
     public function setUp()
     {
         $this->slice             = $this->quickMock('\PHPixie\Slice');
-        $this->filesystemRoot    = $this->quickMock('\PHPixie\Filesystem\Root');
         $this->filesystemLocator = $this->quickMock('\PHPixie\Filesystem\Locators\Locator');
         $this->configData        = $this->getData();
+        $this->filesystemRoot    = $this->quickMock('\PHPixie\Filesystem\Root');
         
         for($i=0;$i<2;$i++) {
             $this->externalExtensions[]= $this->abstractMock('\PHPixie\Template\Extensions\Extension');
@@ -43,9 +43,9 @@ class BuilderTest extends \PHPixie\Test\Testcase
         
         $this->builder = new \PHPixie\Template\Builder(
             $this->slice,
-            $this->filesystemRoot,
             $this->filesystemLocator,
             $this->configData,
+            $this->filesystemRoot,
             $this->externalExtensions,
             $this->externalFormats
         );

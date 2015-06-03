@@ -8,18 +8,18 @@ class Template
     
     public function __construct(
         $slice,
-        $filesystemRoot,
         $filesystemLocator,
         $configData,
+        $filesystemRoot     = null,
         $externalExtensions = array(),
         $externalFormats    = array()
     )
     {
         $this->builder = $this->buildBuilder(
             $slice,
-            $filesystemRoot,
             $filesystemLocator,
             $configData,
+            $filesystemRoot,
             $externalExtensions,
             $externalFormats
         );
@@ -42,18 +42,18 @@ class Template
     
     protected function buildBuilder(
         $slice,
-        $filesystemRoot,
         $filesystemLocator,
         $configData,
+        $filesystemRoot,
         $externalExtensions,
         $externalFormats
     )
     {
         return new Template\Builder(
             $slice,
-            $filesystemRoot,
             $filesystemLocator,
             $configData,
+            $filesystemRoot,
             $externalExtensions,
             $externalFormats
         );

@@ -5,9 +5,9 @@ namespace PHPixie\Template;
 class Builder
 {
     protected $slice;
-    protected $locator;
-    
+    protected $filesystemLocator;
     protected $configData;
+    protected $filesystemRoot;
     protected $externalExtensions;
     protected $externalFormats;
     
@@ -15,17 +15,17 @@ class Builder
     
     public function __construct(
         $slice,
-        $filesystemRoot,
         $filesystemLocator,
         $configData,
+        $filesystemRoot,
         $externalExtensions,
         $externalFormats
     )
     {
         $this->slice              = $slice;
-        $this->filesystemRoot     = $filesystemRoot;
         $this->filesystemLocator  = $filesystemLocator;
         $this->configData         = $configData;
+        $this->filesystemRoot     = $filesystemRoot;
         $this->externalExtensions = $externalExtensions;
         $this->externalFormats    = $externalFormats;
     }
