@@ -17,7 +17,7 @@ class HTML implements \PHPixie\Template\Extensions\Extension
     public function aliases()
     {
         return array(
-            '_' => 'output'
+            '_' => 'escape'
         );
     }
     

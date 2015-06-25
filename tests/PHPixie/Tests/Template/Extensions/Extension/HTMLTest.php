@@ -39,7 +39,7 @@ class HTMLTest extends \PHPixie\Test\Testcase
     public function testAliases()
     {
         $this->assertSame(array(
-            '_' => 'output'
+            '_' => 'escape'
         ), $this->html->aliases());
     }
     
