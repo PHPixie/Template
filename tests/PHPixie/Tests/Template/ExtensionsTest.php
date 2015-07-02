@@ -85,14 +85,16 @@ class ExtensionsTest extends \PHPixie\Test\Testcase
             $extensionAliases = array();
             
             for($i=0; $i<2; $i++) {
-                $method = $name.'Method'.$i;
-                $alias = $name.'Alias'.$i;
+                $method      = $name.'Method'.$i;
+                $methodAlias = 'alias'.$method;
+                $alias       = $name.'Alias'.$i;
                 
-                $extensionMethods[]=$method;
+                
+                $extensionMethods[$methodAlias]=$method;
                 $extensionAliases[$alias]=$method;
                 
-                $methods[$name.ucfirst($method)] = array($extension, $method);
-                $aliases[$alias] = array($extension, $method);
+                $methods[$methodAlias] = array($extension, $method);
+                $aliases[$alias]       = array($extension, $method);
             }
             
             $this->method($extension, 'methods', $extensionMethods, array(), 1);

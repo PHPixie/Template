@@ -11,7 +11,10 @@ class HTML implements \PHPixie\Template\Extensions\Extension
     
     public function methods()
     {
-        return array('escape', 'output');
+        return array(
+            'htmlEscape' => 'escape',
+            'htmlOutput' => 'output'
+        );
     }
     
     public function aliases()

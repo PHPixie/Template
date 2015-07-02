@@ -29,7 +29,10 @@ class HTMLTest extends \PHPixie\Test\Testcase
      */
     public function testMethods()
     {
-        $this->assertSame(array('escape', 'output'), $this->html->methods());
+        $this->assertSame(array(
+            'htmlEscape' => 'escape',
+            'htmlOutput' => 'output'
+        ), $this->html->methods());
     }
     
     /**
