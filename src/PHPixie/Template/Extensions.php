@@ -62,9 +62,11 @@ class Extensions
         
         $methods = array();
         $aliases = array();
-        foreach($extensions as $extension) {
+        foreach($extensions as $name => $extension) {
+            
             foreach($extension->methods() as $method) {
-                $methods[$method] = array($extension, $method);
+                $methodAlias = $name.ucfirst($method);
+                $methods[$methodAlias] = array($extension, $method);
             }
             
             foreach($extension->aliases() as $alias => $method) {

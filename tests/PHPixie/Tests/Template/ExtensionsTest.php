@@ -91,7 +91,7 @@ class ExtensionsTest extends \PHPixie\Test\Testcase
                 $extensionMethods[]=$method;
                 $extensionAliases[$alias]=$method;
                 
-                $methods[$method] = array($extension, $method);
+                $methods[$name.ucfirst($method)] = array($extension, $method);
                 $aliases[$alias] = array($extension, $method);
             }
             
