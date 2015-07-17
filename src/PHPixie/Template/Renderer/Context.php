@@ -76,7 +76,7 @@ class Context
     {
         return array_merge(
             $this->extensions->aliases(),
-            $this->data->get()
+            $this->data->get(null, array())
         );
     }
 

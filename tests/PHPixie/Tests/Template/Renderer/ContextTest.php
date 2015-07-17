@@ -107,7 +107,7 @@ class ContextTest extends \PHPixie\Test\Testcase
         );
         
         $this->method($this->extensions, 'aliases', $aliases, array(), 0);
-        $this->method($this->data, 'get', $data, array(), 0);
+        $this->method($this->data, 'get', $data, array(null, array()), 0);
         
         $variables = array_merge($aliases, $data);
         $this->assertSame($variables, $this->context->variables());
