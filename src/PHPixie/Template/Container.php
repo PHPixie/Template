@@ -28,7 +28,6 @@ class Container
     public function get($path, $default = null)
     {
         return $this->data->get($path, $default);
-        return $this;
     }
     
     public function set($path, $data)
