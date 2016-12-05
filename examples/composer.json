@@ -1,0 +1,7 @@
+{
+    "require": {
+        "phpixie/template": "3.*@dev",
+        "phpixie/slice": "3.*@dev",
+        "phpixie/filesystem": "3.*@dev"
+    }
+}
