@@ -30,6 +30,10 @@ class Builder
         $this->externalFormats    = $externalFormats;
     }
     
+    /**
+     * 
+     * @return Extensions
+     */
     public function extensions()
     {
         return $this->instance('extensions');
@@ -54,6 +58,10 @@ class Builder
         return $this->instance('renderer');
     }
     
+    /**
+     * 
+     * @return Resolver
+     */
     public function resolver()
     {
         return $this->instance('resolver');

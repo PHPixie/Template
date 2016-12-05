@@ -4,6 +4,10 @@ namespace PHPixie\Template\Renderer;
 
 class Context
 {
+    /**
+     *
+     * @var \PHPixie\Template\Extensions 
+     */
     protected $extensions;
     protected $renderer;
     protected $resolver;

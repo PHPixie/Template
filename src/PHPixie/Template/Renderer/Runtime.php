@@ -2,6 +2,10 @@
 
 namespace PHPixie\Template\Renderer;
 
+/**
+ * @method string httpPath(string $resolverPath, array $attributes=array()) Generate path
+ * @method string httpUri(string $resolverPath, array $attributes, bool $withHost=true) Generate URI
+ */
 class Runtime
 {
     protected $context;

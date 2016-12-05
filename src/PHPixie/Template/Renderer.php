@@ -4,6 +4,10 @@ namespace PHPixie\Template;
 
 class Renderer
 {
+    /**
+     *
+     * @var Builder
+     */
     protected $templateBuilder;
     /**
      *
