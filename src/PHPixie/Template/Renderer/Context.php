@@ -14,6 +14,10 @@ class Context
     protected $template;
     protected $data;
     
+    /**
+     *
+     * @var \PHPixie\Template\Resolver 
+     */
     protected $layout;
     protected $childContent;
     
@@ -37,6 +41,10 @@ class Context
         return $this->renderer;
     }
     
+    /**
+     * 
+     * @return \PHPixie\Template\Resolver
+     */
     public function resolver()
     {
         return $this->resolver;

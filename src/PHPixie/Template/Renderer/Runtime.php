@@ -8,6 +8,10 @@ namespace PHPixie\Template\Renderer;
  */
 class Runtime
 {
+    /**
+     *
+     * @var Context 
+     */
     protected $context;
     protected $openBuffers = 0;
     

@@ -45,6 +45,10 @@ class Template
         return $this->builder->container($name, $data);
     }
     
+    /**
+     * 
+     * @return Template\Builder 
+     */
     public function builder()
     {
         return $this->builder;
