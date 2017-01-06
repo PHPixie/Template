@@ -15,7 +15,7 @@ class Renderer
     }
     
     public function render($name, $data) {
-        $arrayData = $this->slice->arrayData($data);
+        $arrayData = $this->slice->editableArrayData($data);
         $context   = $this->context($name, $arrayData);
         $runtime   = $this->runtime($context);
         return $runtime->run();
