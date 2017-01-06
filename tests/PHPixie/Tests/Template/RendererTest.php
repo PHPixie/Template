@@ -93,7 +93,7 @@ class RendererTest extends \PHPixie\Test\Testcase
         $array = array('t' => 1);
         
         $arrayData = $this->getData();
-        $this->method($this->slice, 'arrayData', $arrayData, array($array));
+        $this->method($this->slice, 'editableArrayData', $arrayData, array($array));
         
         $context = $this->getContext();
         $this->method($mock, 'context', $context, array($template, $arrayData), 0);
