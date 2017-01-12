@@ -12,7 +12,7 @@ class ExtensionsTest extends \PHPixie\Test\Testcase
     
     protected $extensions;
     
-    protected $extensionNames = array('html');
+    protected $extensionNames = array('html', 'format');
     
     public function setUp()
     {

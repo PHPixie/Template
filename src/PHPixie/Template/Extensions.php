@@ -11,9 +11,10 @@ class Extensions
     protected $methods;
     protected $aliases;
     
-    protected $extensionNames = array('html');
+    protected $extensionNames = array('html', 'format');
     protected $classMap = array(
-        'html' => '\PHPixie\Template\Extensions\Extension\HTML'
+        'html' => '\PHPixie\Template\Extensions\Extension\HTML',
+        'format' => '\PHPixie\Template\Extensions\Extension\Format'
     );
     
     public function __construct($configData, $externalExtensions)
@@ -90,6 +91,6 @@ class Extensions
     protected function buildExtension($name)
     {
         $class = $this->classMap[$name];
-        return new $class;
+        return new $class();
     }
 }
