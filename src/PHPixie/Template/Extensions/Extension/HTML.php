@@ -13,7 +13,8 @@ class HTML implements \PHPixie\Template\Extensions\Extension
     {
         return array(
             'htmlEscape' => 'escape',
-            'htmlOutput' => 'output'
+            'htmlOutput' => 'output',
+            'if'         => 'shortIf'
         );
     }
     
@@ -23,7 +24,7 @@ class HTML implements \PHPixie\Template\Extensions\Extension
             '_' => 'escape'
         );
     }
-    
+
     public function escape($string)
     {
         return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
@@ -32,5 +33,10 @@ class HTML implements \PHPixie\Template\Extensions\Extension
     public function output($string)
     {
         echo $this->escape($string);
+    }
+
+    public function shortIf($condition, $ifTrue, $ifFalse = null)
+    {
+        return $condition ? $ifTrue : $ifFalse;
     }
 }
