@@ -31,7 +31,8 @@ class HTMLTest extends \PHPixie\Test\Testcase
     {
         $this->assertSame(array(
             'htmlEscape' => 'escape',
-            'htmlOutput' => 'output'
+            'htmlOutput' => 'output',
+            'if'         => 'shortIf'
         ), $this->html->methods());
     }
     
