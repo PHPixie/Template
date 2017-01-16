@@ -16,6 +16,11 @@ class Renderer
     protected $slice;
     protected $resolver;
     
+    /**
+     * 
+     * @param Builder $templateBuilder
+     * @param \PHPixie\Slice $slice
+     */
     public function __construct($templateBuilder, $slice)
     {
         $this->templateBuilder = $templateBuilder;
@@ -48,7 +53,7 @@ class Renderer
     /**
      * 
      * @param string $template
-     * @param type $arrayData
+     * @param \PHPixie\Slice\Type\ArrayData $arrayData
      * @return \PHPixie\Template\Renderer\Context
      */
     public function context($template, $arrayData)

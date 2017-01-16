@@ -4,7 +4,7 @@ namespace PHPixie\Template\Renderer;
 
 /**
  * @method string httpPath(string $resolverPath, array $attributes=array()) Generate path
- * @method string httpUri(string $resolverPath, array $attributes, bool $withHost=true) Generate URI
+ * @method string httpUri(string $resolverPath, array $attributes, boolean $withHost=true) Generate URI
  */
 class Runtime
 {
@@ -20,6 +20,10 @@ class Runtime
         $this->context = $context;
     }
     
+    /**
+     * 
+     * @return string
+     */
     public function run()
     {
         extract($this->context->variables());
@@ -50,6 +54,12 @@ class Runtime
 
     }
     
+    /**
+     * 
+     * @param string $template
+     * @param array $data
+     * @return string
+     */
     protected function render($template, $data = array())
     {
         return $this->context->renderer()->render($template, $data);
@@ -60,6 +70,13 @@ class Runtime
         return $this->context->resolver()->resolve($template);
     }
     
+    /**
+     * 
+     * @param string $name
+     * @param boolean $onlyIfNotExists
+     * @param boolean $prepend
+     * @return boolean
+     */
     protected function startBlock($name, $onlyIfNotExists = false, $prepend = false)
     {
         if($onlyIfNotExists && $this->context->blockExists($name)) {
@@ -74,6 +91,10 @@ class Runtime
         return true;
     }
     
+    /**
+     * 
+     * @return null
+     */
     protected function endBlock()
     {
         $content = ob_get_clean();
@@ -82,6 +103,10 @@ class Runtime
         return $this->context->endBlock($content);
     }
     
+    /**
+     * 
+     * @param string $name
+     */
     protected function layout($name)
     {
         $this->context->setLayout($name);

@@ -39,11 +39,19 @@ class Builder
         return $this->instance('extensions');
     }
     
+    /**
+     * 
+     * @return Formats
+     */
     public function formats()
     {
         return $this->instance('formats');
     }
     
+    /**
+     * 
+     * @return Compiler
+     */
     public function compiler()
     {
         return $this->instance('compiler');
