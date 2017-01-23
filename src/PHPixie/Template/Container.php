@@ -4,8 +4,16 @@ namespace PHPixie\Template;
 
 class Container
 {
+    /**
+     *
+     * @var Renderer
+     */
     protected $renderer;
     protected $template;
+    /**
+     *
+     * @var \PHPixie\Slice\Type\ArrayData\Editable
+     */
     protected $data;
     
     public function __construct($renderer, $template, $data)
@@ -27,7 +35,7 @@ class Container
     
     public function get($path, $default = null)
     {
-        return $this->data->get($path, $default);
+        return $this->data->get($path, $default);        
     }
     
     public function set($path, $data)
@@ -42,6 +50,10 @@ class Container
         return $this;
     }
 
+    /**
+     * 
+     * @return type
+     */
     public function render()
     {
         return $this->renderer->render(

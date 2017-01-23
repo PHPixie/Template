@@ -4,12 +4,36 @@ namespace PHPixie\Template\Renderer;
 
 class Context
 {
+    /**
+     *
+     * @var \PHPixie\Template\Extensions 
+     */
     protected $extensions;
+    
+    /**
+     *
+     * @var \PHPixie\Template\Renderer 
+     */
     protected $renderer;
+    
+    /**
+     *
+     * @var \PHPixie\Template\Resolver 
+     */
     protected $resolver;
+    
     protected $template;
+    
+    /**
+     *
+     * @var type 
+     */
     protected $data;
     
+    /**
+     *
+     * @var \PHPixie\Template\Resolver 
+     */
     protected $layout;
     protected $childContent;
     
@@ -19,6 +43,14 @@ class Context
     protected $blocks = array();
     protected $blockStack = array();
     
+    /**
+     * 
+     * @param \PHPixie\Template\Extensions $extensions
+     * @param \PHPixie\Template\Renderer $renderer
+     * @param \PHPixie\Template\Resolver $resolver
+     * @param string $template
+     * @param \PHPixie\Slice\Type\ArrayData $data
+     */
     public function __construct($extensions, $renderer, $resolver, $template, $data)
     {
         $this->extensions = $extensions;
@@ -33,6 +65,10 @@ class Context
         return $this->renderer;
     }
     
+    /**
+     * 
+     * @return \PHPixie\Template\Resolver
+     */
     public function resolver()
     {
         return $this->resolver;
@@ -105,11 +141,21 @@ class Context
         return null;
     }
     
+    /**
+     * 
+     * @param string $name
+     * @param boolean $prepend
+     */
     public function startBlock($name, $prepend = false)
     {
         array_push($this->blockStack, array($name, $prepend));
     }
     
+    /**
+     * 
+     * @param string $content
+     * @throws \PHPixie\Template\Exception
+     */
     public function endBlock($content)
     {
         if(empty($this->blockStack)) {

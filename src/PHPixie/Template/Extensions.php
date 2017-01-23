@@ -29,6 +29,11 @@ class Extensions
         return $this->extensions[$name];
     }
     
+    /**
+     * 
+     * @param string $name
+     * @return type
+     */
     public function getMethod($name)
     {
         $this->requireMappedExtensions();

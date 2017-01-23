@@ -4,6 +4,10 @@ namespace PHPixie;
 
 class Template
 {
+    /**
+     *
+     * @var Template\Builder 
+     */
     protected $builder;
     
     public function __construct(
@@ -30,11 +34,21 @@ class Template
         return $this->builder->renderer()->render($name, $data);
     }
     
+    /**
+     * 
+     * @param string $name
+     * @param array $data
+     * @return \PHPixie\Template\Container
+     */
     public function get($name, $data = array())
     {
         return $this->builder->container($name, $data);
     }
     
+    /**
+     * 
+     * @return Template\Builder 
+     */
     public function builder()
     {
         return $this->builder;

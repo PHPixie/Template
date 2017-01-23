@@ -30,31 +30,57 @@ class Builder
         $this->externalFormats    = $externalFormats;
     }
     
+    /**
+     * 
+     * @return Extensions
+     */
     public function extensions()
     {
         return $this->instance('extensions');
     }
     
+    /**
+     * 
+     * @return Formats
+     */
     public function formats()
     {
         return $this->instance('formats');
     }
     
+    /**
+     * 
+     * @return Compiler
+     */
     public function compiler()
     {
         return $this->instance('compiler');
     }
     
+    /**
+     * 
+     * @return \PHPixie\Template\Renderer
+     */
     public function renderer()
     {
         return $this->instance('renderer');
     }
     
+    /**
+     * 
+     * @return Resolver
+     */
     public function resolver()
     {
         return $this->instance('resolver');
     }
     
+    /**
+     * 
+     * @param string $name
+     * @param array $data
+     * @return \PHPixie\Template\Container
+     */
     public function container($name, $data = array())
     {
         $data = $this->slice->editableArrayData($data);
@@ -105,7 +131,7 @@ class Builder
             $this->configData->slice('resolver')
         );
     }
-    
+        
     protected function buildRenderer()
     {
         return new Renderer(
